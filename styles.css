@@ -134,7 +134,7 @@ body {
 }
 
 .tile.dance {
-  animation: dance 250ms ease-in-out;
+  animation: dance 500ms ease-in-out;
 }
 
 .tile.flip {
