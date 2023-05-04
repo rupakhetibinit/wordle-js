@@ -15292,7 +15292,7 @@ const dictionary = [
 
 const targetWord =
   targetWords[Math.floor(Math.random() * targetWords.length - 1)];
-console.log({ targetWord });
+let temp = '';
 const FLIP_ANIMATION_DURATION = 500;
 const DANCE_ANIMATION_DURATION = 500;
 const WORD_LENGTH = 5;
@@ -15377,7 +15377,7 @@ function submitGuess() {
   const guess = activeTiles.reduce((word, tile) => {
     return word + tile.dataset.letter;
   }, '');
-  // console.log(guess);
+
   if (!dictionary.includes(guess)) {
     showAlert('Not in word list');
     shakeTiles(activeTiles);
@@ -15386,15 +15386,16 @@ function submitGuess() {
 
   stopInteraction();
   activeTiles.forEach((...params) => {
-    console.log({ params });
+    // console.log({ params });
     flipTile(...params, guess);
   });
+  temp = '';
 }
 
 function flipTile(tile, index, array, guess) {
   const letter = tile.dataset.letter.toLowerCase();
   const key = keyboard.querySelector(`[data-key="${letter}"i]`);
-  console.log(key);
+  // console.log(key);
   setTimeout(() => {
     tile.classList.add('flip');
   }, (index * FLIP_ANIMATION_DURATION) / 2);
@@ -15404,11 +15405,18 @@ function flipTile(tile, index, array, guess) {
     () => {
       tile.classList.remove('flip');
       if (targetWord[index] === letter) {
+        temp += letter;
         tile.dataset.state = 'correct';
         key.classList.add('correct');
       } else if (targetWord.includes(letter)) {
-        tile.dataset.state = 'wrong-location';
-        key.classList.add('wrong-location');
+        if (temp.split(letter).length < targetWord.split(letter).length) {
+          tile.dataset.state = 'wrong-location';
+          key.classList.add('wrong-location');
+          temp += letter;
+        } else {
+          tile.dataset.state = 'wrong';
+          key.classList.add('wrong');
+        }
       } else {
         tile.dataset.state = 'wrong';
         key.classList.add('wrong');
@@ -15476,6 +15484,10 @@ function checkWinLose(guess, tiles) {
     stopInteraction();
   }
 }
+
+/**
+ * @param {Element[]} tiles - The tiles that are active
+ */
 
 function danceTiles(tiles) {
   tiles.forEach((tile, index) => {
