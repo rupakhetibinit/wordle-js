@@ -15294,6 +15294,7 @@ const targetWord =
   targetWords[Math.floor(Math.random() * targetWords.length - 1)];
 console.log({ targetWord });
 const FLIP_ANIMATION_DURATION = 500;
+const DANCE_ANIMATION_DURATION = 500;
 const WORD_LENGTH = 5;
 const guessGrid = document.querySelector('[data-guess-grid]');
 const alertContainer = document.querySelector('[data-alert-container]');
@@ -15391,41 +15392,41 @@ function submitGuess() {
 }
 
 function flipTile(tile, index, array, guess) {
-  const letter = tile.dataset.letter;
-  const key = keyboard.querySelector(`[data-key="${letter.toUpperCase()}"]`);
-  console.log({ tile, index, array, guess });
+  const letter = tile.dataset.letter.toLowerCase();
+  const key = keyboard.querySelector(`[data-key="${letter}"i]`);
+  console.log(key);
   setTimeout(() => {
     tile.classList.add('flip');
   }, (index * FLIP_ANIMATION_DURATION) / 2);
 
-  tile.addEventListener('transitionend', () => {
-    tile.classList.remove('flip');
-    if (targetWord[index] === letter) {
-      tile.dataset.state = 'correct';
-      key.classList.add('correct');
-    } else if (targetWord.includes(letter)) {
-      tile.dataset.state = 'wrong-location';
+  tile.addEventListener(
+    'transitionend',
+    () => {
+      tile.classList.remove('flip');
+      if (targetWord[index] === letter) {
+        tile.dataset.state = 'correct';
+        key.classList.add('correct');
+      } else if (targetWord.includes(letter)) {
+        tile.dataset.state = 'wrong-location';
+        key.classList.add('wrong-location');
+      } else {
+        tile.dataset.state = 'wrong';
+        key.classList.add('wrong');
+      }
 
-      key.classList.add('wrong-location');
-    } else {
-      tile.dataset.state = 'wrong';
-      key.classList.add = 'wrong';
-    }
-  });
-
-  if (index === array.length - 1) {
-    tile.addEventListener('transitionend', () => {
-      startInteraction();
-    });
-  }
-
-  // if (targetWord[index] === letter) {
-  //   tile.classList.add('correct');
-  // } else if (targetWord.includes(letter)) {
-  //   tile.classList.add('wrong-location');
-  // } else {
-  //   tile.classList.add('wrong');
-  // }
+      if (index === array.length - 1) {
+        tile.addEventListener(
+          'transitionend',
+          () => {
+            startInteraction();
+            checkWinLose(guess, array);
+          },
+          { once: true }
+        );
+      }
+    },
+    { once: true }
+  );
 }
 
 function showAlert(message, duration = 1000) {
@@ -15444,7 +15445,7 @@ function showAlert(message, duration = 1000) {
 
 // Parameters may be declared in a variety of syntactic forms
 /**
- * @param {Element[]} activeTiles - A element param
+ * @param {Element[]} activeTiles - The active tiles that are written in the game
  */
 
 function shakeTiles(activeTiles) {
@@ -15457,5 +15458,36 @@ function shakeTiles(activeTiles) {
       },
       { once: true }
     );
+  });
+}
+
+function checkWinLose(guess, tiles) {
+  if (guess === targetWord) {
+    showAlert('You win', 5000);
+    danceTiles(tiles);
+    stopInteraction();
+    return;
+  }
+
+  const remainingTiles = guessGrid.querySelectorAll(':not([data-letter])');
+
+  if (remainingTiles.length === 0) {
+    showAlert(`The word was ${targetWord.toUpperCase()}`, null);
+    stopInteraction();
+  }
+}
+
+function danceTiles(tiles) {
+  tiles.forEach((tile, index) => {
+    setTimeout(() => {
+      tile.classList.add('dance');
+      tile.addEventListener(
+        'animationend',
+        () => {
+          tile.classList.remove('dance');
+        },
+        { once: true }
+      );
+    }, (index * DANCE_ANIMATION_DURATION) / 5);
   });
 }
