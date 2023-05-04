@@ -15474,6 +15474,7 @@ function checkWinLose(guess, tiles) {
     showAlert('You win', 5000);
     danceTiles(tiles);
     stopInteraction();
+    showConfettis();
     return;
   }
 
@@ -15502,4 +15503,28 @@ function danceTiles(tiles) {
       );
     }, (index * DANCE_ANIMATION_DURATION) / 5);
   });
+}
+
+/*
+  Confetti animation https://stackoverflow.com/a/64503571/14563882 Javascript portion. just making 20 
+  different confetti div's and then changing their colors and animation delay by using javascript 
+  Math.random(). removing the hidden attribute because the container is hidden at the start. And this 
+  function only runs when the user wins the game, i.e. when the user correctly guesses the target word 
+  in 5 attempts, by using any hints that the game has provided 
+*/
+const colors = ['#f2d74e', '#95c3de', '#ff9a91'];
+
+function showConfettis() {
+  const confettiContainer = document.getElementById('confettis');
+  for (let i = 0; i < 20; i++) {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * 3)];
+    confetti.style.animationDelay = i === 0 ? '0' : `${Math.random() * 5}s`;
+    confetti.style.left = `${(i % 10) * 10}%`;
+    confetti.style.top = '-5%';
+    confettiContainer.appendChild(confetti);
+  }
+  confettiContainer.classList.remove('hidden');
 }
