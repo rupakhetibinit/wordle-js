@@ -121,11 +121,20 @@ body {
 
 .tile[data-state='wrong'] {
   border: none;
+  background-color: hsl(240, 2%, 23%);
+}
+
+.tile[data-state='correct'] {
+  border: none;
   background-color: hsl(115, 29%, 43%);
 }
 
 .tile.shake {
   animation: shake 250ms ease-in-out;
+}
+
+.tile.dance {
+  animation: dance 250ms ease-in-out;
 }
 
 .tile.flip {
@@ -150,6 +159,30 @@ body {
   }
   100% {
     transform: translateX(0%);
+  }
+}
+
+@keyframes dance {
+  20% {
+    transform: translateY(-50%);
+  }
+  40% {
+    transform: translateY(20%);
+  }
+  60% {
+    transform: translateY(-30%);
+  }
+  80% {
+    transform: translateY(10%);
+  }
+  90% {
+    transform: translateY(-5%);
+  }
+  95% {
+    transform: translateY(5%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }
 
