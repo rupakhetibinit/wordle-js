@@ -348,3 +348,7 @@ body {
 .hidden{
   display: none;
 }
+
+.tile-dark{
+  --text-white:#f7ffff
+}

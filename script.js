@@ -15404,7 +15404,8 @@ function flipTile(tile, index, array, guess) {
     'transitionend',
     () => {
       tile.classList.remove('flip');
-
+      tile.classList.add("tile-dark")
+      key.classList.add('tile-dark')
       if (targetWord[index] === letter) {
         temp += letter;
         tile.dataset.state = 'correct';
@@ -15547,7 +15548,6 @@ themeIcon.addEventListener('click',()=>{
     lightIcon.classList.remove("hidden")
     themeIcon.style.color="black"
     themeIcon.style.borderColor="black"
-    
   }else {
     root.style.setProperty('--text-white',"#ffffff");
     themeIcon.dataset.theme ="dark"
