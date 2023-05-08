@@ -15404,6 +15404,7 @@ function flipTile(tile, index, array, guess) {
     'transitionend',
     () => {
       tile.classList.remove('flip');
+
       if (targetWord[index] === letter) {
         temp += letter;
         tile.dataset.state = 'correct';
@@ -15528,3 +15529,32 @@ function showConfettis() {
   }
   confettiContainer.classList.remove('hidden');
 }
+
+
+
+const themeIcon = document.getElementById("theme-icon")
+const darkIcon = document.getElementsByClassName("dark-icon")[0]
+const lightIcon= document.getElementsByClassName("light-icon")[0]
+const root = document.querySelector(':root');
+const tiles = document.querySelectorAll('.tile');
+themeIcon.addEventListener('click',()=>{
+  if(themeIcon.dataset.theme==="dark"){
+    root.style.setProperty('--text-white',"#000000")
+
+    themeIcon.dataset.theme ="light"
+    document.body.style.backgroundColor ="white";
+    darkIcon.classList.add("hidden")
+    lightIcon.classList.remove("hidden")
+    themeIcon.style.color="black"
+    themeIcon.style.borderColor="black"
+    
+  }else {
+    root.style.setProperty('--text-white',"#ffffff");
+    themeIcon.dataset.theme ="dark"
+    document.body.style.backgroundColor ="hsl(240, 3%, 7%)";
+    darkIcon.classList.remove("hidden")
+    lightIcon.classList.add("hidden")
+    themeIcon.style.color="white"
+    themeIcon.style.borderColor="white"
+  }
+})

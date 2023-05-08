@@ -330,3 +330,21 @@ body {
     transform: rotateZ(15deg) rotateY(1440deg) translate(10vw, 110vh);
   }
 }
+
+#theme-icon {
+  border: 0.05rem solid white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem;
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden{
+  display: none;
+}
