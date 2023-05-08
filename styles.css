@@ -343,6 +343,7 @@ body {
   right: 0;
   color: white;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .hidden{
